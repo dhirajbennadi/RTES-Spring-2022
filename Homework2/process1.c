@@ -7,9 +7,13 @@
 
 #include <fcntl.h>
 
-
+/*Number of Threads to be created*/
 #define THREAD_NUM 1
+/*Count of Semaphore for synchronization*/
+/*Binary Semaphore Count is 1*/
 #define SEMAPHORE_NUMBER 1
+
+/*Named Semaphore*/
 #define SEMAPHORE_NAME "semProcess"   
 
 sem_t *semaphore = NULL;
@@ -31,9 +35,9 @@ int main()
 
     /*Depending on the initialization of the semaphore, multiple threads can acquire the semaphore and start executing*/
     /*If the semaphore count is 0 , the thread will have to wait until other threads release the semaphore*/
-    //sem_init(&semaphore , 1 , 3);
     semaphore = sem_open(SEMAPHORE_NAME, O_CREAT, 0644, SEMAPHORE_NUMBER);
 
+    /*Creation of threads*/
     for(int i = 0; i < THREAD_NUM; i++)
     {
         int *a = malloc(sizeof(int));
@@ -43,6 +47,7 @@ int main()
 
     }
 
+    
     for (size_t i = 0; i < THREAD_NUM; i++)
     {
         pthread_join(threads[i] , NULL);
